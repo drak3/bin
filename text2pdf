@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#text2pdf, takes a piece of text, wraps it in a latex block via the 'texify' util, and converts the result to pdf
+#text2pdf passes its parameters to texify
+#TODO: quote the text
+#TODO: figure out how to isolate run of pdflatex
+
+IN_FILE="/dev/stdin"
+OUT_FILE="/dev/stdout"
+
+texifyargs="$#"
+
+#cat $IN_FILE | texify $texifyargs | pdflatex -halt-on-error 

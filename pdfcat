@@ -1,0 +1,11 @@
+#!/bin/bash
+
+PDFCAT_USAGE="Concatenates multiple pdf files and writes result to stdout\nUSAGE: $0 <files to concat>"
+#expects pdftk to be in $PATH
+PDFCAT_PDFTK_BIN="pdftk"
+if [[ $# -eq 0 ]]
+then
+    echo -e $PDFCAT_USAGE
+else
+    pdftk $* cat output -
+fi

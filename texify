@@ -1,0 +1,59 @@
+#!/bin/sh
+
+#A helper to turn raw text into an ad-hoc latex file by wrapping it in \begin{document} \end{document} and adding some directives in the header
+#Takes input from stdin and writes tex to stdout
+#TODO: escape input?
+#TODO: write a helper 'text2pdf'
+#TODO: allow custom prelude?
+
+usage() {
+    echo "texify [-t|--title <title>] [-l|--lang|--language <language>]"
+}
+help() {
+    usage
+    echo "texify takes input from stdin, wraps it inside a tex enviroment between \\\begin{document} and \\\end{document}"
+    echo "documentclass is [12pt, a4paper]{article}"
+}
+
+while [ "$1" != "" ]; do
+    case $1 in
+        "-t" | "--title")
+            shift
+            title=$1
+            ;;
+        "-l" | "--lang" | "--language")
+            shift
+            language=$1
+            ;;
+        "-h" | "--help")
+            help
+            exit
+            ;;
+    esac
+    shift
+done
+
+
+if [ -n "$title" ]; then
+    TITLE_HEADER="\\\title{$title}"
+fi
+
+if [ -z "$language" ]; then
+    language="english"
+fi
+
+GENERIC_HEADER="\\documentclass[12pt, a4paper]{article}\n\\usepackage[utf8x]{inputenc}"
+LANG_HEADER="\\usepackage[$language]{babel}"
+
+echo $GENERIC_HEADER
+echo $LANG_HEADER
+echo $TITLE_HEADER
+
+echo "\\\begin{document}"
+if [ -n "$title" ];then
+    echo "\\\maketitle"
+    echo
+fi
+cat /dev/stdin
+echo "\\end{document}"
+
